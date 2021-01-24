@@ -27,26 +27,13 @@ void build(NODE* &root, int key);
 /*中序遍历（inorder tree walk）*/
 void itw(NODE *root)
 {
-	NODE *node = root;
-	while(node != NULL)
+	if(root != NULL)
 	{
-		if(node->lchild == NULL)
-		{
-			cout<<node->key<<endl;
-			if(node->rchild != NULL)
-				node = node->rchild;
-
-			while(node != NULL && (node->rchild) == NULL)
-			{
-				node = node->parent;
-				if (node != NULL)
-				{
-					cout<<node->key<<endl;
-				}
-			}
-		}else
-			node = node->lchild;
+		itw(root->lchild);
+		cout<<root->key<<endl;
+		itw(root->rchild);
 	}
+	
 }
 
 int main(int argc, char const *argv[])
@@ -55,6 +42,10 @@ int main(int argc, char const *argv[])
 	build(root,5);
 	build(root,4);
 	build(root,1);
+	build(root,10);
+	build(root,9);
+	build(root,11);
+	build(root,8);
 	itw(root);
 	return 0;
 }
@@ -73,19 +64,20 @@ void build(NODE* &node, int key)
 	{
 		NODE *tmp = node;
 		NODE *p = NULL;
+		NODE *next = new NODE;
+		next->lchild = NIL;
+		next->rchild = NIL;
 
 		while(tmp != NULL)
 		{
 			p = tmp;
+
 			if (tmp->key > key)
 			{
 				tmp = tmp->lchild;
 				if (tmp == NULL)
 				{
-					NODE *next = new NODE;
 					next->key = key;
-					next->lchild = NIL;
-					next->rchild = NIL;
 					next->parent = p;
 					p->lchild = next;
 				}
@@ -94,10 +86,7 @@ void build(NODE* &node, int key)
 				tmp = tmp->rchild;
 				if (tmp == NULL)
 				{
-					NODE *next = new NODE;
 					next->key = key;
-					next->lchild = NIL;
-					next->rchild = NIL;
 					next->parent = p;
 					p->rchild = next;
 				}
